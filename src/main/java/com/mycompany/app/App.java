@@ -19,7 +19,7 @@ public class App
 {
 
     public static void
-        getObjectBytes (S3Client s3, String bucketName, String keyName, String path) {
+        getObjectBytes (S3Client s3, String bucketName, String keyName, String path) throws InterruptedException {
 
         try {
             GetObjectRequest objectRequest = GetObjectRequest
@@ -37,7 +37,12 @@ public class App
             OutputStream os = new FileOutputStream(myFile);
             os.write(data);
             System.out.println("Successfully obtained bytes from an S3 object");
+
+            
             os.close();
+            while(true) {
+                Thread.sleep(4000);
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -48,7 +53,7 @@ public class App
     }
 
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws InterruptedException
     {   
         String bucket = System.getenv("S3_BUCKET");
         String key = System.getenv("S3_KEY");
