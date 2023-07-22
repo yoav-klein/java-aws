@@ -1,6 +1,9 @@
 #!/bin/bash
 
+
 setup() {
+    aws eks update-kubeconfig --region us-east-1 --name my-cluster
+
     bucket_name=$(terraform output -raw s3_bucket_name)
     account_id=$(aws sts get-caller-identity --query Account --output text)
 
@@ -12,6 +15,5 @@ setup() {
 }
 
 test() {
-    bucket_name=$(tf output -raw s3_bucket_name)
-    kubectl exec aws -- aws s3 cp s3://${bucket_name}/content.txt -
+    kubectl logs aws-java -c reader
 }

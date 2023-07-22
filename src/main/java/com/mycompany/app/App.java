@@ -65,12 +65,12 @@ public class App
 
         String region = System.getenv("AWS_REGION") == null ? "us-east-1" : System.getenv("AWS_REGION");
         S3Client client = S3Client.builder()
-                       .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+                       //.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                        .region(Region.of(region))
                        //.httpClientBuilder(UrlConnectionHttpClient.builder())
                        .build();
         
-        getObjectBytes(client, bucket, key, "some-file.txt");
+        getObjectBytes(client, bucket, key, "/tmp/some-file.txt");
 
         System.out.println("Done!");
     }

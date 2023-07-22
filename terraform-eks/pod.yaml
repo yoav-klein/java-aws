@@ -20,5 +20,19 @@ spec:
       - name: S3_BUCKET
         value: my-tf-test-bucket-yoav12
       - name: S3_KEY
-        value: content.txt    
+        value: content.txt
+      volumeMounts:
+      - name: shared
+        mountPath: /tmp
+    - name: reader
+      image: ubuntu:22.04
+      command: ["bash", "-c", "while true; do cat /tmp/some-file.txt; sleep 5; done"]
+      volumeMounts:
+      - name: shared
+        mountPath: /tmp
+
+  volumes:
+  - name: shared
+    emptyDir: {}
+      
 

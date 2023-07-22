@@ -1,42 +1,41 @@
-# Elastic Kubernetes Service
+# Running in EKS using IRSA
 ---
 
-This builds on the simple example, but this we deomnstrate the use of IAM for Service Accounts.
+What we want to demonstrate here is that our Java application can utilize IRSA for permissions.
 
-## Explanation
----
-### IAM Identity providers background
-In AWS IAM, we can configure a trust relationship between an external Identity provider and AWS account.
-This can be either a OIDC or SAML provider.
+IRSA - IAM Roles for Service Accounts, is a set up that allows you to annotate a Service Account
+with a role name, and have that role's credentials in your pod, so that you can access AWS resources
+from within your pod easily and securely.
 
-Once you configure an OIDC provider, a user can access the AWS STS `AssumeRoleWithWebIdentity` API with an
-ID token issued by the Identity provider.
+In this directory, we have Terraform code that provisions the following infrastructure:
+* VPC
+* EKS cluster and nodes
+* S3 Bucket
+* IAM role which has access to this bucket
+* IRSA related configuration, so that our pod can assume that role.
 
-### In EKS
-A EKS cluster provides an OIDC provider, which grants ID tokens to Service Accounts.
-All you need to do is annotate a service account with the role ARN that you want the pod to assume.
+Then, we'll run a pod in the EKS cluster with 2 containers:
+* One container runs our Java application, which reads the content from the S3 bucket object, and
+  outputs it to a file
+* Second container just reads the file and outputs it to stdout
 
 
 ## Usage
 ---
 
 ### Run Terraform
-Run the terraform code: `tf apply -auto-approve`
+Edit the `environment` file and source it, and run the terraform code: `terrform apply -auto-approve`
 
-### Configure kubeconfig
-```
-$ ../configure_kubeconfig.sh
-```
 
 ### Upload content to S3, and apply a pod
-source the `test.sh` file, and run `setup`
+source the `functions.sh` file, and run `setup`
 ```
-$ source test.sh
+$ source functions.sh
 $ setup
 ```
 
-This uploads a file to the S3 bucket, and creates the pod with the ServiceAccount
-who will have permissions to the bucket.
+This uploads a file to the S3 bucket, and creates the pod with our Java application
+with the ServiceAccount who will have permissions to the bucket.
 
 ### Test
 Wait a minute for the pod to start, and then
@@ -45,4 +44,4 @@ Run
 $ test
 ```
 
-This will have the pod accessing the S3 bucket.
+If you get the content of the file that was uploaded to S3, this is SUCCESS!

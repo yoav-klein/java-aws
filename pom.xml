@@ -39,7 +39,7 @@
 
 <dependencies>
   
-  <dependency>
+    <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>s3</artifactId>
       <exclusions>
@@ -52,18 +52,23 @@
               <artifactId>apache-client</artifactId>
           </exclusion>
       </exclusions>
-  </dependency>
+    </dependency>
 
-  <dependency>
+    <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>url-connection-client</artifactId>
-  </dependency>
+    </dependency>
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>sts</artifactId>
+    </dependency>
 
-  <dependency>
+
+    <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-core</artifactId>
       <version>${aws.lambda.java.version}</version>
-  </dependency>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
