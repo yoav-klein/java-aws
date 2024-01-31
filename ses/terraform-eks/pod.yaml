@@ -1,0 +1,31 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: developer
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::090166080904:role/developer
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: java-aws-ses
+  labels:
+    app: java-aws-ses
+spec:
+  serviceAccountName: developer
+  containers:
+    - name: java-aws
+      image: yoavklein3/java-aws-ses:latest
+      args: ["yoavklein25@gmail.com", "yoavklein25@gmail.com", "IRSA is gerat"]     
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-cli-pod
+spec:
+  serviceAccountName: developer
+  containers:
+  - name: aws-cli-container
+    image: amazon/aws-cli:latest
+    command: [ "sh", "-c", "aws --version && sleep 3600" ]  # Replace sleep 3600 with your desired command or script
+
