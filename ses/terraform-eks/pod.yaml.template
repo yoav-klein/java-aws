@@ -1,0 +1,19 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: developer
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account_id>:role/developer
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-java-ses
+  labels:
+    app: aws-java-ses
+spec:
+  serviceAccountName: developer
+  containers:
+    - name: aws-java
+      image: yoavklein3/java-aws-ses:latest
+     
