@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.ses.model.Message;
 import software.amazon.awssdk.services.ses.model.Body;
 import software.amazon.awssdk.services.ses.model.SendEmailRequest;
 import software.amazon.awssdk.services.ses.model.SesException;
+//import software.amazon.awssdk.auth.credentials.WebIdentityTokenFileCredentialsProvider;
 
 import javax.mail.MessagingException;
 
@@ -38,6 +39,7 @@ public class SendMessageEmailRequest {
 
         Region region = Region.US_EAST_1;
         SesClient client = SesClient.builder()
+  //              .credentialsProvider(WebIdentityTokenFileCredentialsProvider.create())
                 .region(region)
                 .build();
 

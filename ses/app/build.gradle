@@ -19,6 +19,7 @@ dependencies {
     implementation libs.guava
     implementation platform('software.amazon.awssdk:bom:2.21.1')
     implementation 'software.amazon.awssdk:ses'
+    implementation 'software.amazon.awssdk:sts'
     implementation 'javax.mail:mail:1.4.7'
 }
 

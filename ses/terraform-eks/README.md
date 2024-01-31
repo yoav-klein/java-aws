@@ -14,34 +14,30 @@ In this directory, we have Terraform code that provisions the following infrastr
 * IAM role which has access to this bucket
 * IRSA related configuration, so that our pod can assume that role.
 
-Then, we'll run a pod in the EKS cluster with 2 containers:
-* One container runs our Java application, which reads the content from the S3 bucket object, and
-  outputs it to a file
-* Second container just reads the file and outputs it to stdout
 
 
 ## Usage
 ---
 
+
 ### Run Terraform
 Edit the `environment` file and source it, and run the terraform code: `terrform apply -auto-approve`
 
+After creating this infrastructure, go to AWS SES in the console and create an identity (yoavklein25@gmail.com).
 
-### Upload content to S3, and apply a pod
-source the `functions.sh` file, and run `setup`
+now source the `functions.sh` file, and run `setup`
 ```
 $ source functions.sh
 $ setup
 ```
 
-This uploads a file to the S3 bucket, and creates the pod with our Java application
-with the ServiceAccount who will have permissions to the bucket.
+This will configure kubeconfig and create the `pod.yaml` from the template.
 
 ### Test
-Wait a minute for the pod to start, and then
-Run
+Run the pod:
 ```
-$ test
+$ kubectl apply -f pod.yaml
 ```
 
-If you get the content of the file that was uploaded to S3, this is SUCCESS!
+You should receive an email, which indicates that it works.
+
