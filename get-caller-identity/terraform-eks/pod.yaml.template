@@ -1,0 +1,38 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: developer
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::<account_id>:role/developer
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-java
+  labels:
+    app: aws-java
+spec:
+  serviceAccountName: developer
+  containers:
+    - name: aws-java
+      image: yoavklein3/aws-java:latest
+      env:
+      - name: S3_BUCKET
+        value: <s3_bucket>
+      - name: S3_KEY
+        value: <s3_key>
+      volumeMounts:
+      - name: shared
+        mountPath: /tmp
+    - name: reader
+      image: ubuntu:22.04
+      command: ["bash", "-c", "while true; do cat /tmp/some-file.txt; sleep 5; done"]
+      volumeMounts:
+      - name: shared
+        mountPath: /tmp
+
+  volumes:
+  - name: shared
+    emptyDir: {}
+      
+
